@@ -1,0 +1,134 @@
+<ngb-alert *ngIf="!successMessage" type="success" (close)="successMessage=true">
+  <!-- {{ successMessage }}   -->
+  {{message}}
+</ngb-alert>
+<!-- <button class="btn btn-primary" (click)="getChitDetails()">GetChitDetails</button> -->
+
+<!-- <div class="container">
+                <form class="well form-horizontal">
+                  
+                      <div class="form-group">
+                         <label class="col-md-4 control-label">Group Name</label>
+                         <div class="col-md-4 inputGroupContainer">
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span><input id="fullName" name="fullName" placeholder="Full Name" class="form-control" required="true" value="" type="text"></div>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-4 control-label">Amount</label>
+                         <div class="col-md-4 inputGroupContainer">
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span><input id="addressLine1" name="addressLine1" placeholder="Address Line 1" class="form-control" required="true" value="" type="text"></div>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-4 control-label">No of Members</label>
+                         <div class="col-md-4 inputGroupContainer">
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span><input id="addressLine2" name="addressLine2" placeholder="Address Line 2" class="form-control" required="true" value="" type="text"></div>
+                         </div>
+                      </div>
+                      <div class="form-group">
+                         <label class="col-md-4 control-label">City</label>
+                         <div class="col-md-4 inputGroupContainer">
+                            <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-home"></i></span><input id="city" name="city" placeholder="City" class="form-control" required="true" value="" type="text"></div>
+                         </div>
+                      </div>
+                </form>
+ </div> -->
+
+ <form>
+    <div class="form-group row">
+      <label for="staticEmail" class="col-sm-2 col-form-label" >Group Name</label>
+      <div class="col-sm-3">
+        <input type="text"  class="form-control" [(ngModel)]="newchitReq.groupName" id="staticEmail" name="groupName" placeholder="GroupName" >
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="inputPassword" class="col-sm-2 col-form-label">Amount</label>
+      <div class="col-sm-3">
+        <input type="text" class="form-control" id="NoofMember" [(ngModel)]="newchitReq.amount" name="Amount" placeholder="Amount">
+      </div>
+    </div>
+    <div class="form-group row">
+        <label  class="col-sm-2 col-form-label">No of Members</label>
+        <div class="col-sm-3">
+          <input type="text" class="form-control" id="NoofMember" [(ngModel)]="newchitReq.noOfMemeber" name="NoofMember" placeholder="NoofMember">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">No of Months</label>
+        <div class="col-sm-3">
+          <input type="text" class="form-control" id="NoofMonths" [(ngModel)]="newchitReq.noofmonths" name="noofmonths" placeholder="NoofMonths">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Start Date</label>
+        <div class="input-group col-sm-3 ">
+          <input class="form-control" placeholder="yyyy-mm-dd"
+                 name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
+          <div class="input-group-append">
+            <button (click)="d.toggle()" type="button">
+              <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+       <div class="form-group row">
+        <label class="col-sm-2 col-form-label">End Date</label>
+        <div class="input-group col-sm-3 ">
+          <input class="form-control" placeholder="yyyy-mm-dd"
+                 name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
+          <div class="input-group-append">
+            <button (click)="d.toggle()" type="button">
+              <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Commission %</label>
+        <div class="col-sm-3">
+          <input type="text" class="form-control" id="commission"  name="Commission" placeholder="Commission">
+          <!-- [(ngModel)]="newchitReq.noofmonths" -->
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-2">
+            <button class="btn btn-primary mb-5"  (click)="ResetFormField(newchitReq)">Reset</button>
+        </div>
+        
+        <div class="col-sm-1">
+            <button class="btn btn-primary mb-2"  (click)="savechitdetails(newchitReq)">Save</button> 
+        </div>
+        
+      </div>
+      <!-- <button class="btn btn-primary mb2"  (click)="getChitDetails()">Reset</button> -->
+      <!-- <div class=" row">
+        
+     <label for="inputPassword" class="col-sm-2 col-form-label">No of Members</label> 
+        <div class="col-sm-2">
+        <button class="btn btn-primary mb2" (click)="getChitDetails()">Save</button>
+        </div>
+      </div> -->
+
+  </form>
+<!-- <table #dataTable class="display" style="width:100%" class="row-border hover"></table> -->
+<table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="display" style="width:100%" >
+  <thead>
+    <tr>
+      <th>ChitNumber</th>
+      <th>GroupName</th>
+      <th>Amount</th>
+      <th>NoOfMemeber</th>
+      <th>NoOfMonths</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let newchit of newchitreponseArray">
+      <td>{{ newchit.chitNumber }}</td>
+      <td>{{ newchit.groupName }}</td>
+      <td>{{ newchit.amount }}</td>
+      <td>{{ newchit.noOfMemeber }}</td>
+      <td>{{ newchit.noofmonths }}</td>
+    </tr>
+  </tbody>
+  </table>
+ 

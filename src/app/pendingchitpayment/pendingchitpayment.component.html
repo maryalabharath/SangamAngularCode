@@ -1,0 +1,57 @@
+<p>pendingchitpayment works!</p>
+
+<form>
+<div class="form-group row">
+    <label for="Search" class="col-sm-2 col-form-label" >Group Name</label>
+    <div class="col-sm-3">
+        <mat-form-field >
+            <input type="text"
+                   placeholder="Pick one"
+                   aria-label="Number"
+                   matInput
+                   [formControl]="myControl"
+                   [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption 
+             [displayWith]="displayGroup"   (optionSelected)="selectedOption($event)" >
+              <mat-option *ngFor="let option of filteredGroupNames | async" [value]="option">
+                {{option.groupName}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+    </div>
+    <div class="col-sm-3">
+        <button class="btn btn-primary mb-2" (click)="getPendingDetails()" >Search</button>  
+        <!-- (click)="savechitdetails(newchitReq)" (click)="getMemberPaymentDetails()" -->
+    </div>
+</div>
+
+<table datatable  class="row-border hover" [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+    <thead>
+      <tr>
+        <th>FirstName</th>
+        <th>LastName</th>
+        <th>MobileNumber</th>
+        <th>Address</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let mempayment of pendingPayMemberArray">
+        <td>{{ mempayment.firstname }}</td>
+        <td>{{ mempayment.lastname }}</td>
+        <td>{{ mempayment.mobilenumber }}</td>
+        <td>{{ mempayment.address }}</td>
+        <td>{{ mempayment.emailaddress }}</td>
+      </tr>
+    </tbody>
+    </table>
+ 
+</form>
+
+
+<!-- (optionSelected)="selectedOption($event)"
+     <md-autocomplete #auto="mdAutocomplete" [displayWith]="displayFn">
+    <md-option *ngFor="l et state of filteredStates | async" [value]="state" (click)="selectedItem=state">
+    {{ state.name }}
+    </md-option>
+  </md-autocomplete> -->

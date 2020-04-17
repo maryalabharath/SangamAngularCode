@@ -1,0 +1,89 @@
+<ngb-alert *ngIf="!successMessage" type="success" (close)="successMessage=true">
+  <!-- {{ successMessage }}   -->
+  {{message}}
+</ngb-alert>
+<form>
+    <div class="form-group row">
+        <label for="GroupName" class="col-sm-2 col-form-label" >GroupName</label>
+        <div class="col-sm-3">
+          <select type="text"  class="form-control"  id="GroupName"
+           name="groupName" placeholder="GroupName" [(ngModel)]="selecteChitNumber" (change)="getActualChitAmount($event.target.value)"  >
+         
+           <option *ngFor="let group of GroupNameArray" [value]="group.chitNumber">{{group.groupName}}</option>
+  
+           <!-- <option value="1">Group1</option>[(ngModel="regMemReq.chitnumber")]  [(ngModel="")]-->
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="chitAmount" class="col-sm-2 col-form-label">Chit Amount</label>
+        <div class="col-sm-3">
+          <input type="text" class="form-control" id="chitAmount"  name="chitAmount" [(ngModel)]="ActualChitAmount.amount" placeholder="chitAmount">
+          <!-- [(ngModel)]="newchitReq.amount" -->
+        </div>
+      </div>
+
+    <div class="form-group row">
+      <label for="BidAmount" class="col-sm-2 col-form-label" >Bid Amount</label>
+      <div class="col-sm-3">
+        <input type="text"  class="form-control"  id="BidAmount" name="BidAmount" [(ngModel)]="AuctionDetails.bidamount" placeholder="Bid Amount" >
+        <!-- [(ngModel)]="newchitReq.groupName" -->
+      </div>
+    </div>
+
+      <div class="form-group row">
+        <label for="Search" class="col-sm-2 col-form-label" >Member Name</label>
+        <div class="col-sm-3">
+            <mat-form-field >
+                <input type="text"
+                       placeholder="Pick one"
+                       aria-label="Number"
+                       matInput
+                       [formControl]="myControl"
+                       [matAutocomplete]="auto"   >
+                <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption 
+                (optionSelected)="selectedOption($event)"  [displayWith]="displayMember" >
+                  <mat-option *ngFor="let option of filteredMemberNames | async" [value]="option">
+                    {{option.firstname}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+
+              <!-- [(ngModel)]="selectedMember" -->
+        </div>
+    </div>
+      
+      <div class="form-group row">
+        <div class="col-sm-2">
+            <button class="btn btn-primary mb-5"  >Reset</button>
+        </div>
+        
+        <div class="col-sm-1">
+            <button class="btn btn-primary mb-2" (click)="saveAuctionDetails(AuctionDetails)" >Save</button> 
+        </div>
+        
+      </div>
+
+  </form>
+<!-- <table #dataTable class="display" style="width:100%"></table> -->
+
+<table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="display" style="width:100%" >
+  <thead>
+    <tr>
+      <th>ChitNumber</th>
+      <th>BidAmount</th>
+      <th>ActualChitAmount</th>
+      <th>LiftedMemName</th>
+      <th>LiftedDate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let auction of auctionreponseArray">
+      <td>{{ auction.chitnumber }}</td>
+      <td>{{ auction.actualchitamount }}</td>
+      <td>{{ auction.bidamount }}</td>
+      <td>{{ auction.liftedmemname }}</td>
+      <td>{{ auction.lifteddate }}</td>
+    </tr>
+  </tbody>
+  </table>

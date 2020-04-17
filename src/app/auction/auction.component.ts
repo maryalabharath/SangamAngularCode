@@ -1,0 +1,180 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AuctionService } from '../services/auction.service';
+import { AuctionResponse } from '../objects/auctionresponse';
+import { NewChitResponse } from '../objects/newchitresponse';
+import { NewchitserviceService } from '../services/newchitservice.service';
+import { DatePipe } from '@angular/common';
+import { RegistermemberService } from '../services/registermember.service';
+import { FormControl } from '@angular/forms';
+import { Observable, Subject } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
+import { RegisterMemeberResponse } from '../objects/registermemberresponse';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { DataTableDirective } from 'angular-datatables';
+declare var $;
+@Component({
+  selector: 'app-auction',
+  templateUrl: './auction.component.html',
+  styleUrls: ['./auction.component.css']
+})
+export class AuctionComponent implements OnInit {
+
+ 
+  @ViewChild(DataTableDirective)
+  dtElement: DataTableDirective;
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject();
+  public GroupNameArray:NewChitResponse[];
+  public ActualChitAmount:NewChitResponse=new NewChitResponse();
+  public AuctionDetails:AuctionResponse=new AuctionResponse();
+  public MemberNames:RegisterMemeberResponse[]=[];
+  public selecteChitNumber:number;
+  public selectedMemberName:RegisterMemeberResponse;
+  public auctionreponseArray: AuctionResponse[];
+  myControl = new FormControl();
+  options: string[]=[];
+  //filteredOptions: Observable<string[]>;
+  public successMessage:boolean = false;
+  public message:string;
+  filteredMemberNames: Observable<RegisterMemeberResponse[]>;
+  public selectedMember:string;
+
+  constructor(private auctionService:AuctionService,private newchitservice:NewchitserviceService,private datePipe:DatePipe,
+    private registermemberservice:RegistermemberService) { }
+
+    ngOnInit(): void {
+      this.successMessage=true;
+
+      this.dtOptions = {
+        pagingType: 'simple_numbers',
+        pageLength: 5,
+        order:[]
+        
+     };  
+   
+    this.filteredMemberNames=this.myControl.valueChanges.pipe(
+      startWith(null),
+      map(membername => membername ? this.filtermember(membername) : this.MemberNames.slice()));
+    this.getAuctionDetails();
+    this.getGroupDetails();
+  }
+
+  filtermember(s: any) {
+    let groupname = s.name || s; // s can be a State or a string
+    return this.MemberNames.filter(member =>
+      member.firstname.toLowerCase().indexOf(member.firstname.toLowerCase()) === 0);
+  }
+
+  displayMember(member: RegisterMemeberResponse) {
+    return member ? member.firstname : '';
+  }
+
+  getAuctionDetails()
+  {
+    this.auctionService.getAuctionDetails().subscribe(data =>{
+      console.log(data);
+      this.auctionreponseArray=data;
+      this.dtTrigger.next();
+      // this.dtOptions = {
+      //   data: this.auctionreponseArray,
+      //   columns: [
+      //     {title: 'AuctionNumber', data: 'auctionnumber'},
+      //     {title: 'ChitNumber', data: 'chitnumber'},
+      //     {title: 'BidAmount', data: 'bidamount'},
+      //     {title: 'ActualChitAmount', data: 'actualchitamount'},
+      //     {title: 'LiftedMemName', data: 'liftedmemname'},
+      //     {title: 'LiftedDate', data: 'lifteddate'},
+      //   ]
+      // };
+    // }, err => {}, () => {
+    //   this.dataTable = $(this.table.nativeElement);
+    //   this.dataTable.DataTable(this.dtOptions);
+    // });
+    });
+  }  
+
+  getGroupDetails()
+  {
+    this.newchitservice.getChitDetails().subscribe(data =>{
+      console.log(data);
+      this.GroupNameArray=data;
+    });
+  }
+  
+
+  getActualChitAmount(chitnumber)
+  {
+    console.log(chitnumber);
+    this.selecteChitNumber=chitnumber;
+    this.auctionService.getGroupNameByChitNumber(chitnumber).subscribe(data => {
+      console.log(data);
+      this.ActualChitAmount=data;
+    })
+    this.getMemberDetailsByChitNumber();
+  }
+
+  saveAuctionDetails(auction:AuctionResponse)
+  {
+    auction.actualchitamount = this.ActualChitAmount.amount;
+    auction.chitnumber = this.selecteChitNumber;
+    auction.lifteddate=this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    auction.liftedmemname=this.selectedMemberName.firstname;
+    auction.memberid=this.selectedMemberName.membernumber;
+    this.auctionService.saveAuctionDetails(auction).subscribe(data => {
+      console.log(data);
+      this.message=data.liftedmemname+' Bid Details Succesfully Saved';
+      this.successMessage=false;
+      setTimeout(() => this.successMessage = true, 8000)
+      this.rerender();
+      this.ResetFormFields(auction);
+      this.getAuctionDetails();
+    })
+    
+  }
+
+   getMemberDetailsByChitNumber()
+  {
+    this.registermemberservice.getMemberDetailsByChitNumber(this.selecteChitNumber).subscribe(data => {
+      this.MemberNames=data;
+      this.filteredMemberNames=this.myControl.valueChanges.pipe(
+        startWith(null),
+        map(membername => membername ? this.filtermember(membername) : this.MemberNames.slice()));
+      // for(let member of this.MemberNames)
+      // {
+      //   this.options.push(member.firstname);
+      // }
+      // console.log(data);
+    })
+  }
+
+  selectedOption(event) {
+    this.selectedMemberName = event.option.value;
+    this.selectedMember=this.selectedMemberName.firstname;
+    console.log(this.selectedMemberName);
+  }
+  
+  ResetFormFields(auction:AuctionResponse)
+  {
+     this.selecteChitNumber=null;
+     this.ActualChitAmount.amount=null;
+     auction.bidamount=null;
+     this.selectedMember='';
+     this.selectedMemberName.mobilenumber=null;
+     this.options=[];
+    //  this.getMemberDetailsByChitNumber();
+     
+  }
+
+  rerender(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      // Destroy the table first
+      dtInstance.destroy();
+      // Call the dtTrigger to rerender again
+      // this.dtTrigger.next();
+    });
+  }
+
+//   onChange() {
+//     console.log(deviceValue);
+// }
+}

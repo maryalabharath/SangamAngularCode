@@ -1,0 +1,91 @@
+<p>chitpaymenthistory works!</p>
+<!-- <form class="example-form">
+    <mat-form-field class="example-full-width">
+      <input type="text"
+             placeholder="Pick one"
+             aria-label="Number"
+             matInput
+             [formControl]="myControl"
+             [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form> -->
+
+<!-- <table #memberdatatable class="display" style="width:100%"></table> -->
+
+<form>
+  <div class="form-group row">
+      <label for="GroupName" class="col-sm-2 col-form-label" >GroupName</label>
+      <div class="col-sm-3">
+        <select type="text"  class="form-control"  id="GroupName"
+         name="groupName" placeholder="GroupName" [(ngModel)]="selecteChitNumber" (change)="getActualChitAmount($event.target.value)"  >
+       
+         <option *ngFor="let group of GroupNameArray" [value]="group.chitNumber">{{group.groupName}}</option>
+
+         <!-- <option value="1">Group1</option>[(ngModel="regMemReq.chitnumber")]  [(ngModel="")]-->
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="Search" class="col-sm-2 col-form-label" >Member Name</label>
+      <div class="col-sm-3">
+          <mat-form-field >
+              <input type="text"
+                     placeholder="Pick one"
+                     aria-label="Number"
+                     matInput
+                     [formControl]="myControl"
+                     [matAutocomplete]="auto"   >
+              <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption 
+              (optionSelected)="selectedOption($event)"  [displayWith]="displayMember" >
+                <mat-option *ngFor="let option of filteredMemberNames | async" [value]="option">
+                  {{option.firstname}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+
+            <!-- [(ngModel)]="selectedMember" -->
+      </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-sm-2">
+        <!-- <button class="btn btn-primary mb-5"  >Reset</button> -->
+    </div>
+    
+    <div class="col-sm-1">
+        <button class="btn btn-primary mb-2"  >Search</button> 
+        <!-- (click)="saveAuctionDetails(AuctionDetails)" -->
+    </div>
+    
+  </div>
+
+</form>
+
+<table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="display" style="width:100%" >
+  <thead>
+    <tr>
+      <th>GroupName</th>
+      <th>Firstname</th>
+      <th>InterestAmount</th>
+      <th>PaidAmount</th>
+      <th>commission</th>
+      <th>Paiddate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let payment of paymentHistoryreponseArray">
+      <td>{{ payment.groupname }}</td>
+      <td>{{ payment.firstname }}</td>
+      <td>{{ payment.interestamount }}</td>
+      <td>{{ payment.paidamount }}</td>
+      <td>{{ payment.commission }}</td>
+      <td>{{ payment.paiddate | date: 'yyyy-MM-dd' }}</td>
+    </tr>
+  </tbody>
+  </table>

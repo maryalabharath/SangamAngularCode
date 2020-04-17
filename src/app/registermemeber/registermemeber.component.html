@@ -1,0 +1,114 @@
+<ngb-alert *ngIf="!successMessage" type="success" (close)="successMessage=true">
+  <!-- {{ successMessage }}   -->
+  {{message}}
+</ngb-alert>
+<form>
+    <div class="form-group row">
+      <label for="GroupName" class="col-sm-2 col-form-label" >Select GroupName</label>
+      <div class="col-sm-3">
+        <select type="text"  class="form-control"  id="GroupName"
+         name="groupName" placeholder="GroupName" [(ngModel)] ="regMemReq.chitnumber"  >
+       
+         <option *ngFor="let group of GroupNameArray" [value]="group.chitNumber">{{group.groupName}}</option>
+
+         <!-- <option value="1">Group1</option>[(ngModel="regMemReq.chitnumber")]  [(ngModel="")]-->
+        </select>
+      </div>
+    </div>
+    <div class="form-group row">
+        <label  class="col-sm-2 col-form-label">FirstName</label>
+        <div class="col-sm-3">
+          <input type="text" class="form-control" id="FirstName" [(ngModel)]="regMemReq.firstname" name="FirstName" placeholder="FirstName" (change)="valuechange($event.target.value)">  
+        </div>
+      </div>
+      <div class="form-group row">
+          <label  class="col-sm-2 col-form-label">LastName</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" id="LastName" [(ngModel)]="regMemReq.lastname"name="LastName" placeholder="LastName">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label  class=" col-sm-2 col-form-label">Gender</label>
+          <div class="col-sm-3" >
+          <div class="form-check form-check-inline">
+            <input class="form-check-input"name="group1" type="radio" id="inlineCheckbox1" [(ngModel)]="regMemReq.gender" value="Male">
+            <label class="form-check-label" for="inlineCheckbox1">Male</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" name="group1" type="radio" id="inlineCheckbox2" [(ngModel)]="regMemReq.gender" value="Female">
+            <label class="form-check-label" for="inlineCheckbox2">Female</label>
+          </div>
+        </div>
+        </div>
+        <div class="form-group row">
+          <label  class="col-sm-2 col-form-label">DateofBirth</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" id="DateofBirth" name="DateofBirth" [(ngModel)]="regMemReq.dob" placeholder="DateofBirth">
+            <!--  -->
+          </div>
+         <div class="col-sm-2 col-form-label">
+          <label>YYYY-MM-DD</label>
+        </div>
+        </div>
+
+        <div class="form-group row">
+          <label  class="col-sm-2 col-form-label">MobileNumber</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" id="MobileNumber" name="MobileNumber" [(ngModel)]="regMemReq.mobilenumber" placeholder="MobileNumber">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label  class="col-sm-2 col-form-label">Address</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" id="Address" name="Address" [(ngModel)]="regMemReq.address" placeholder="Address">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label  class="col-sm-2 col-form-label">Email</label>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" id="Email" name="Email" [(ngModel)]="regMemReq.emailaddress" placeholder="Email">
+          </div>
+        </div>
+    
+        <div class="form-group row">
+          <div class="col-sm-2">
+              <button class="btn btn-primary mb-5"  (click)="ResetFormFields(regMemReq)">Reset</button>
+          </div>
+          
+          <div class="col-sm-1">
+              <button class="btn btn-primary mb-2"  (click)="saveMemberDetails(regMemReq)">Save</button> 
+          </div>
+          </div>
+          
+ </form>
+<!-- <table #memberdatatable class="display" style="width:100%"></table> -->
+<!-- [(ngModel)]="newchitReq.groupName" -->
+<table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="display" style="width:100%" >
+  <thead>
+    <tr>
+      <th>MemberNumber</th>
+      <th>ChitNumber</th>
+      <th>FirstName</th>
+      <th>LastName</th>
+      <th>Gender</th>
+      <th>DateofBirth</th>
+      <th>MobileNumber</th>
+      <th>Address</th>
+      <th>EmailAddress</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let regmem of regmemreponseArray">
+      <td>{{ regmem.membernumber }}</td>
+      <td>{{ regmem.chitnumber }}</td>
+      <td>{{ regmem.firstname }}</td>
+      <td>{{ regmem.lastname }}</td>
+      <td>{{ regmem.gender }}</td>
+      <td>{{ regmem.dob }}</td>
+      <td>{{ regmem.mobilenumber }}</td>
+      <td>{{ regmem.address }}</td>
+      <td>{{ regmem.emailaddress }}</td>
+    </tr>
+  </tbody>
+  </table>

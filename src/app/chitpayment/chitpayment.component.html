@@ -1,0 +1,112 @@
+<p>chitpayment works!</p>
+<!-- class="example-form"
+class="example-full-width" -->
+<form >
+    <div class="form-group row">
+        <label for="Search" class="col-sm-2 col-form-label" >Member Name</label>
+        <div class="col-sm-3">
+            <mat-form-field >
+                <input type="text"
+                       placeholder="Pick one"
+                       aria-label="Number"
+                       matInput
+                       [formControl]="myControl"
+                       [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption 
+                (optionSelected)="selectedOption($event)">
+                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                    {{option}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+        </div>
+        <div class="col-sm-3">
+            <button class="btn btn-primary mb-2" (click)="getMemberPaymentDetails()">Search</button>  
+            <!-- (click)="savechitdetails(newchitReq)" -->
+        </div>
+    </div>
+    <!-- <table  datatable class="display" [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" style="width:100%"></table> -->
+    <table datatable  class="row-border hover" [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" >
+      <thead>
+        <tr>
+          <th>ChitNumber</th>
+          <th>GroupName</th>
+          <th>Amount</th>
+          <th>FirstName</th>
+          <th>Lastname</th>
+          <th>Address</th>
+          <th>Payment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let mempayment of memberPaymentDetailsArray">
+          <td>{{ mempayment.chitNumber }}</td>
+          <td>{{ mempayment.groupName }}</td>
+          <td>{{ mempayment.amount }}</td>
+          <td>{{ mempayment.firstname }}</td>
+          <td>{{ mempayment.lastname }}</td>
+          <td>{{ mempayment.address }}</td>
+          <td> <button  class="btn btn-primary" data-toggle="modal" role="dialog" title="1"
+            data-target="#myModal" (click)="getAuctionDetailsByChitNumber(mempayment)"  
+            >Pay</button> </td>
+        </tr>
+      </tbody>
+      </table>
+     
+
+     
+      <div id="myModal"  class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Payment Details</h5>
+              <button type="button" class="close" #closebutton data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group row">
+                <label for="TotalAmount" class="col-sm-4 col-form-label" >Total Amount</label>
+                <div class="col-sm-6">
+                  <input type="text"  class="form-control" [(ngModel)]="auction.actualchitamount" id="TotalAmount" 
+                  name="TotalAmount" placeholder="TotalAmount" disabled >
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="AuctionAmount" class="col-sm-4 col-form-label">Auction Amount</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" [(ngModel)]="auction.bidamount"
+                    id="AuctionAmount" name="AuctionAmount" placeholder="AuctionAmount" disabled>
+                </div>
+              </div>
+              <div class="form-group row">
+                  <label  class="col-sm-4 col-form-label">Interest Amount</label>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control" [(ngModel)]="InterestAmount" id="InterestAmount"  
+                    name="InterestAmount" placeholder="Interest Amount" disabled>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Payable Amount</label>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control" [(ngModel)]="Amounttopaid"  id="PayableAmount"  name="PayableAmount"
+                     placeholder="Payable Amount" disabled>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-4 col-form-label">Commission</label>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control" [(ngModel)]="commission"  id="Commission"  name="Commission"
+                     placeholder="Commission" disabled>
+                  </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" (click)="savepaymentHistoryDetails()">Save changes</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  </form>
+
