@@ -35,5 +35,10 @@ export class AuctionService {
     const body=JSON.stringify(auction);
     return this.http.post(this.saveauctionurl,body,null)
   }
+
+  getAuctionDetailsByChitNumberArray(chitnumber:number):Observable<AuctionResponse[]>
+  {
+    return this.http.get(this.auctionbychitNbr+chitnumber) ;
+  }
   
 }

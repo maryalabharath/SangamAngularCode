@@ -3,7 +3,7 @@ import { PaymentHistory } from '../objects/paymenthistory';
 import { PaymenthistoryService } from '../services/paymenthistory.service';
 import { startWith, map, subscribeOn } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, interval } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
 import { NewChitResponse } from '../objects/newchitresponse';
 import { RegisterMemeberResponse } from '../objects/registermemberresponse';
@@ -30,6 +30,8 @@ export class ChitpaymenthistoryComponent implements OnInit {
   public selectedChitNumber:number;
   public selectedMemberName:RegisterMemeberResponse;
   public selecteChitNumber:number;
+  public paymenthistory=new PaymentHistory();
+  public selectedName;
   
   constructor(private paymenthistoryservice:PaymenthistoryService,private registermemberservice:RegistermemberService,
     private newchitservice:NewchitserviceService) { }
@@ -38,7 +40,32 @@ export class ChitpaymenthistoryComponent implements OnInit {
     this.dtOptions = {
       pagingType: 'simple_numbers',
       pageLength: 10,
-      order: [[ 5, "desc" ]]
+      // order: [[ 5, "desc" ]],
+      footerCallback: function(row, data, start, end, display) {
+        var api = this.api();
+       
+          // Total over all pages
+         var  total = api
+          .column( 3 )
+          .data()
+          .reduce( function (a, b) {
+              return parseInt(a) + parseInt(b);
+          }, 0 );
+
+      // Total over this page
+     var  pageTotal = api
+          .column( 3, { page: 'current'} )
+          .data()
+          .reduce( function (a, b) {
+              return parseInt(a) + parseInt(b);
+          }, 0 );
+
+      // Update footer
+      $( api.column( 3 ).footer() ).html(
+          '$'+pageTotal +' ( $'+ total +' total)'
+      );
+       
+      }
       
    };  
 
@@ -64,6 +91,8 @@ export class ChitpaymenthistoryComponent implements OnInit {
     console.log(chitnumber);
     this.selecteChitNumber=chitnumber;
     this.getMemberDetailsByChitNumber();
+    this.selectedMember='';
+    this.selectedMemberName.membernumber=null;
   }
 
 
@@ -79,7 +108,7 @@ export class ChitpaymenthistoryComponent implements OnInit {
 
   selectedOption(event) {
     this.selectedMemberName = event.option.value;
-    this.selectedMember=this.selectedMemberName.firstname;
+    // this.selectedMember=this.selectedMemberName.firstname;
     console.log(this.selectedMemberName);
   }
   
@@ -140,7 +169,27 @@ rerender(): void {
 ngAfterViewInit() {
   this.dtTrigger.next();
 }
- 
+
+//paymenthistory:PaymentHistory
+getPaymentDetailsByGrpMember()
+ {
+   this.paymenthistory.chitnumber=this.selecteChitNumber;
+   if(this.selectedMemberName!== undefined)
+   {
+    this.paymenthistory.membernumber=this.selectedMemberName.membernumber;
+   }
+   
+   this.paymenthistoryservice.getPaymentDetailsByGrpandmember(this.paymenthistory).subscribe(data =>{
+     this.paymentHistoryreponseArray=data;
+     this.rerender();
+   })
+
+ }
+
+ getTotal(){
+  return this.paymentHistoryreponseArray.reduce((a, b) => +a + +b.interestamount, 0);
+}
+
 }
 
 

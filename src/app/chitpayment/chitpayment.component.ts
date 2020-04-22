@@ -33,11 +33,15 @@ export class ChitpaymentComponent implements  OnInit {
   public Amounttopaid:number;
   public InterestAmount:number;
   public commission:number;
-  
+  public successMessage:boolean = false;
+  public message:string;
+  public errorMessage : boolean= false;
  
   constructor(private paymenthistoryservice:PaymenthistoryService,private Auctionservice:AuctionService,private datePipe: DatePipe) { }
 
   ngOnInit(): void {
+    this.successMessage=true;
+    this.errorMessage=true;
     this.dtOptions = {
        pagingType: 'simple_numbers',
        pageLength: 5,
@@ -83,12 +87,31 @@ selectedOption(event) {
 
   getAuctionDetailsByChitNumber(memberpaymentdetails:MemberPaymentDetails)
   {
+    let paymentstatus:boolean=false;
     console.log('chitNumber',memberpaymentdetails.chitNumber);
     this.memberPaymentDetall=memberpaymentdetails;
-    this.Auctionservice.getAuctionDetailsByChitNumber(memberpaymentdetails.chitNumber).subscribe(data =>{
+    this.paymenthistory.chitnumber=this.memberPaymentDetall.chitNumber;
+    this.paymenthistory.membernumber=this.memberPaymentDetall.membernumber;
+
+    this.paymenthistoryservice.validateMemberPaymentDetails(this.paymenthistory).subscribe(data =>{
+      if(data !== undefined && data.length==0)
+      {
+        this.Auctionservice.getAuctionDetailsByChitNumber(memberpaymentdetails.chitNumber).subscribe(data =>{
           this.auction=data;
           this. calculatepayableamount(this.auction,memberpaymentdetails);
-    });
+         });
+      }
+      else
+      {
+        this.message="Payment Already Done for Group "+this.memberPaymentDetall.chitNumber+' By '+this.memberPaymentDetall.firstname;
+        this.errorMessage=false;
+        setTimeout(() => this.errorMessage = true,10000);
+        this.closebutton.nativeElement.click();
+
+      }
+
+    } )
+    
   }
 
   calculatepayableamount(auction:AuctionResponse,memberpaymentdetails:MemberPaymentDetails)
@@ -112,11 +135,15 @@ selectedOption(event) {
       this.paymenthistory.interestamount=this.InterestAmount;
       this.paymenthistory.paidamount=this.Amounttopaid;
       this.paymenthistory.commission=this.commission;
-      this.paymenthistory.paiddate=this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+      //this.paymenthistory.paiddate=this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+     this.paymenthistory.paiddate='2020-08-10';
       this.paymenthistory.remarks='paid';
       this.paymenthistory.auctionnumber=this.auction.auctionnumber;
       this.paymenthistoryservice.saveMemberPayentDetais(this.paymenthistory).subscribe(data=>{
       this.closebutton.nativeElement.click();
+      this.message=this.memberPaymentDetall.firstname+' Payment Details Succesfully Saved';
+      this.successMessage=false;
+      setTimeout(() => this.successMessage = true, 8000)
       console.log("Response",data)
       });
   }
@@ -131,19 +158,14 @@ selectedOption(event) {
   ngAfterViewInit() {
     this.dtTrigger.next();
  }
-//   ngOnDestroy(): void {
-//     // Do not forget to unsubscribe the event
-//     this.dtTrigger.unsubscribe();
-// }
+   ngOnDestroy(): void {
+     // Do not forget to unsubscribe the event
+     this.dtTrigger.unsubscribe();
+ }
 
-//  ngAfterViewInit(): void {this.dtTrigger.next();}
+ 
 
-// rerender(): void {
-//     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-//         // Destroy the table first
-//         dtInstance.destroy();
-//         // Call the dtTrigger to rerender again
-//         this.dtTrigger.next();
-//     });
-// }   
+
+
+   
 }

@@ -4,4 +4,8 @@ export class NewChitResponse{
 	public amount:number;
 	public noOfMemeber:number;
 	public noofmonths:number;
+	public startdate:any;
+	public enddate:any;
+	public commission:number;
+
 }

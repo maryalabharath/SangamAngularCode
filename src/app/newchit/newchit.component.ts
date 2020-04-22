@@ -5,7 +5,7 @@ import { debounceTime, startWith, map } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { DataTableDirective } from 'angular-datatables';
-import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDateStruct, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
 declare var $;
 
 @Component({
@@ -21,12 +21,12 @@ export class NewchitComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
   model: NgbDateStruct;
-
   public newchitreponseArray: NewChitResponse[];
   public newchitReq:NewChitResponse=new NewChitResponse();
-  constructor(private newchitservice:NewchitserviceService) { }
+  constructor(private newchitservice:NewchitserviceService,private ngbDateParserFormatter: NgbDateParserFormatter) { }
   public successMessage:boolean = false;
   public message:string;
+  
 
    // destroy:true,
   ngOnInit(): void {
@@ -54,6 +54,10 @@ export class NewchitComponent implements OnInit {
   {
     
     console.log(newchitReq.groupName);
+    let startdate = this.ngbDateParserFormatter.format(newchitReq.startdate);
+    let enddate=this.ngbDateParserFormatter.format(newchitReq.enddate);
+    newchitReq.startdate=startdate;
+    newchitReq.enddate=enddate;
     this.newchitservice.saveChitDetails(newchitReq).subscribe(data =>{
       this.message=data.groupName+' Succesfully Saved';
       this.successMessage=false;
@@ -71,6 +75,7 @@ export class NewchitComponent implements OnInit {
     newchitReq.amount=null;
     newchitReq.noOfMemeber=null;
     newchitReq.noofmonths=null;
+    newchitReq.commission=null;
 
   }
 

@@ -63,30 +63,39 @@
         <label class="col-sm-2 col-form-label">Start Date</label>
         <div class="input-group col-sm-3 ">
           <input class="form-control" placeholder="yyyy-mm-dd"
-                 name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
+                 name="dp" [(ngModel)]="newchitReq.startdate" ngbDatepicker #d="ngbDatepicker">
           <div class="input-group-append">
             <button (click)="d.toggle()" type="button">
-              <i class="glyphicon glyphicon-calendar"></i>
+              <i class="fa fa-calendar"></i>
             </button>
           </div>
         </div>
       </div>
        <div class="form-group row">
         <label class="col-sm-2 col-form-label">End Date</label>
-        <div class="input-group col-sm-3 ">
+        <!-- <div class="input-group col-sm-2 ">
           <input class="form-control" placeholder="yyyy-mm-dd"
-                 name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
+                 name="dp1" [(ngModel)]="newchitReq.enddate" ngbDatepicker #d="ngbDatepicker">
           <div class="input-group-append">
             <button (click)="d.toggle()" type="button">
               <i class="glyphicon glyphicon-calendar"></i>
             </button>
+          </div>f
+        </div> -->
+
+        <div class="input-group col-sm-3">
+          <input class="form-control" placeholder="yyyy-mm-dd" name="dp2" [(ngModel)]="newchitReq.enddate"  ngbDatepicker #d2="ngbDatepicker" required>
+          <div class="input-group-append" >
+             <button (click)="d2.toggle()" type="button">
+              <i class="fa fa-calendar"></i>
+            </button>
           </div>
-        </div>
+      </div>
       </div>
       <div class="form-group row">
         <label class="col-sm-2 col-form-label">Commission %</label>
         <div class="col-sm-3">
-          <input type="text" class="form-control" id="commission"  name="Commission" placeholder="Commission">
+          <input type="text" class="form-control" id="commission" [(ngModel)]="newchitReq.commission"  name="Commission" placeholder="Commission">
           <!-- [(ngModel)]="newchitReq.noofmonths" -->
         </div>
       </div>
@@ -119,6 +128,9 @@
       <th>Amount</th>
       <th>NoOfMemeber</th>
       <th>NoOfMonths</th>
+      <th>StartDate</th>
+      <th>EndDate</th>
+      <th>Commission</th>
     </tr>
   </thead>
   <tbody>
@@ -128,6 +140,9 @@
       <td>{{ newchit.amount }}</td>
       <td>{{ newchit.noOfMemeber }}</td>
       <td>{{ newchit.noofmonths }}</td>
+      <td>{{ newchit.startdate }}</td>
+      <td>{{ newchit.enddate }}</td>
+      <td>{{ newchit.commission }}</td>
     </tr>
   </tbody>
   </table>

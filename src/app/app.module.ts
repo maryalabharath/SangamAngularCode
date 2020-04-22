@@ -29,6 +29,7 @@ import { DatePipe } from '@angular/common';
 import { LoaderComponent } from './loader/loader.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { GooglechartsComponent } from './googlecharts/googlecharts.component';
+import { ChartsModule } from 'ng2-charts';
 
 const appRoutes: Routes = [
   { path:'',component:DashboardComponent},
@@ -70,7 +71,8 @@ const appRoutes: Routes = [
     DataTablesModule,
     RouterModule.forRoot(appRoutes,{useHash:false}),
     BrowserAnimationsModule,
-    NgbModule
+    NgbModule,
+    ChartsModule
   ],
   providers: [
     NewchitserviceService,

@@ -6,4 +6,5 @@ export class AuctionResponse{
 	public liftedmemname:String;
 	public lifteddate:any;
 	public memberid:number;
+	public month:any;
 }

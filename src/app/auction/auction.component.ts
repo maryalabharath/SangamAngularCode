@@ -38,6 +38,8 @@ export class AuctionComponent implements OnInit {
   public message:string;
   filteredMemberNames: Observable<RegisterMemeberResponse[]>;
   public selectedMember:string;
+  public numberOfMonths:any[]=[];
+  public selectedmonth:any;
 
   constructor(private auctionService:AuctionService,private newchitservice:NewchitserviceService,private datePipe:DatePipe,
     private registermemberservice:RegistermemberService) { }
@@ -105,11 +107,29 @@ export class AuctionComponent implements OnInit {
   getActualChitAmount(chitnumber)
   {
     console.log(chitnumber);
+    this.numberOfMonths=[];
+    let noofmonths;
     this.selecteChitNumber=chitnumber;
     this.auctionService.getGroupNameByChitNumber(chitnumber).subscribe(data => {
       console.log(data);
       this.ActualChitAmount=data;
     })
+    if(this.GroupNameArray.length!=0)
+    {
+      for(let group of this.GroupNameArray)
+      {
+        if(this.selecteChitNumber==group.chitNumber)
+        {
+            noofmonths=group.noOfMemeber;
+        }
+      }
+
+    }
+
+    for (let i=1;i<=noofmonths;i++)
+    {
+      this.numberOfMonths.push(i);
+    }
     this.getMemberDetailsByChitNumber();
   }
 
@@ -117,9 +137,11 @@ export class AuctionComponent implements OnInit {
   {
     auction.actualchitamount = this.ActualChitAmount.amount;
     auction.chitnumber = this.selecteChitNumber;
-    auction.lifteddate=this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    //auction.lifteddate=this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    auction.lifteddate='2020-08-10';
     auction.liftedmemname=this.selectedMemberName.firstname;
     auction.memberid=this.selectedMemberName.membernumber;
+    auction.month=this.selectedmonth;
     this.auctionService.saveAuctionDetails(auction).subscribe(data => {
       console.log(data);
       this.message=data.liftedmemname+' Bid Details Succesfully Saved';
@@ -149,7 +171,7 @@ export class AuctionComponent implements OnInit {
 
   selectedOption(event) {
     this.selectedMemberName = event.option.value;
-    this.selectedMember=this.selectedMemberName.firstname;
+    //this.selectedMember=this.selectedMemberName.firstname;
     console.log(this.selectedMemberName);
   }
   
@@ -159,7 +181,7 @@ export class AuctionComponent implements OnInit {
      this.ActualChitAmount.amount=null;
      auction.bidamount=null;
      this.selectedMember='';
-     this.selectedMemberName.mobilenumber=null;
+     this.selectedMemberName.membernumber=null;
      this.options=[];
     //  this.getMemberDetailsByChitNumber();
      

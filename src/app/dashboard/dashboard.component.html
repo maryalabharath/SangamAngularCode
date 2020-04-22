@@ -1,5 +1,23 @@
-<p>dashboard works!</p>
-<div class="table-responsive">
+<form>
+<div class="form-group row">
+  <label for="GroupName" class="col-sm-2 col-form-label" >GroupName</label>
+  <div class="col-sm-3">
+    <select type="text"  class="form-control"  id="GroupName"
+     name="groupName" placeholder="GroupName" [(ngModel)]="selecteChitNumber" >
+   
+     <option *ngFor="let group of GroupNameArray" [value]="group.chitNumber">{{group.groupName}}</option>
+
+     <!-- <option value="1">Group1</option>[(ngModel="regMemReq.chitnumber")]  [(ngModel="")]-->
+    </select>
+  </div>
+  <div class="col-sm-3">
+    <button class="btn btn-primary mb-2" (click)="geAuctionDetailsByChitNbr()" >Search</button>  
+    <!-- (click)="savechitdetails(newchitReq) (click)="getMemberPaymentDetails()"" -->
+  </div>
+</div>
+
+</form>
+<!-- <div class="table-responsive">
             <table class="table table-striped table-sm">
               <thead>
                 <tr>
@@ -125,4 +143,14 @@
                 </tr>
               </tbody>
             </table>
-          </div> 
+          </div>  -->
+
+          <div class="chart-wrapper">
+            <canvas baseChart 
+            [datasets]="barChartData"
+            [labels]="barChartLabels"
+            [options]="barChartOptions"
+            [plugins]="barChartPlugins"
+            [legend]="barChartLegend"
+            [chartType]="barChartType" width="400px" height="190px">
+          </canvas>

@@ -1,6 +1,6 @@
 <ngb-alert *ngIf="!successMessage" type="success" (close)="successMessage=true">
-  <!-- {{ successMessage }}   -->
-  {{message}}
+<!-- {{ successMessage }}   -->
+{{message}}
 </ngb-alert>
 <form>
     <div class="form-group row">
@@ -22,6 +22,16 @@
           <!-- [(ngModel)]="newchitReq.amount" -->
         </div>
       </div>
+      <div class="form-group row">
+        <label for="month" class="col-sm-2 col-form-label" >Month</label>
+        <div class="col-sm-3">
+          <select type="text"  class="form-control"  id="month"
+           name="month" placeholder="Month" [(ngModel)]="selectedmonth"  >
+           <option *ngFor="let group of numberOfMonths" [value]="group">{{group}}</option>
+  
+          </select>
+        </div>
+      </div>
 
     <div class="form-group row">
       <label for="BidAmount" class="col-sm-2 col-form-label" >Bid Amount</label>
@@ -40,7 +50,8 @@
                        aria-label="Number"
                        matInput
                        [formControl]="myControl"
-                       [matAutocomplete]="auto"   >
+                       [matAutocomplete]="auto" 
+                       [(ngModel)]="selectedMember"  >
                 <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption 
                 (optionSelected)="selectedOption($event)"  [displayWith]="displayMember" >
                   <mat-option *ngFor="let option of filteredMemberNames | async" [value]="option">
@@ -49,7 +60,7 @@
                 </mat-autocomplete>
               </mat-form-field>
 
-              <!-- [(ngModel)]="selectedMember" -->
+              <!--  -->
         </div>
     </div>
       
@@ -75,6 +86,7 @@
       <th>ActualChitAmount</th>
       <th>LiftedMemName</th>
       <th>LiftedDate</th>
+      <th>Month</th>
     </tr>
   </thead>
   <tbody>
@@ -84,6 +96,7 @@
       <td>{{ auction.bidamount }}</td>
       <td>{{ auction.liftedmemname }}</td>
       <td>{{ auction.lifteddate }}</td>
+      <td>{{ auction.month }}</td>
     </tr>
   </tbody>
   </table>

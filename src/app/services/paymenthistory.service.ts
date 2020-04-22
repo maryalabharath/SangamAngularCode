@@ -18,6 +18,8 @@ export class PaymenthistoryService {
   public savepaymenturl:string='finance/Payment/save';
   public paymenthistoryurl:string='finance/Payment/getPaymentHistoryDetails';
   public pendingpaymenturl:string='finance/Payment/PendingChitPayments/';
+  public paymentDetailByGrpurl:string='finance/Payment/paymentDetailsByGrpidandMemid';;
+  public validatePaymenturl:string='finance/Payment/validatePayment'
 
   constructor(private http:HttpInterceptor) { }
 
@@ -51,5 +53,17 @@ export class PaymenthistoryService {
   getPendingPaymentDetails(chitnumber:number):Observable<RegisterMemeberResponse[]>
   {
     return this.http.get(this.pendingpaymenturl+chitnumber);
+  }
+
+  getPaymentDetailsByGrpandmember(memberpaymentdetails:PaymentHistory):Observable<PaymentHistory[]>
+  {
+    const body=JSON.stringify(memberpaymentdetails);
+    return this.http.post(this.paymentDetailByGrpurl,body,null);
+  }
+
+  validateMemberPaymentDetails(paymenthistory:PaymentHistory):Observable<PaymentHistory[]>
+  {
+    const body=JSON.stringify(paymenthistory);
+    return this.http.post(this.validatePaymenturl,body,null);
   }
 }
