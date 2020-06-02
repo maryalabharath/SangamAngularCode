@@ -135,8 +135,8 @@ selectedOption(event) {
       this.paymenthistory.interestamount=this.InterestAmount;
       this.paymenthistory.paidamount=this.Amounttopaid;
       this.paymenthistory.commission=this.commission;
-      //this.paymenthistory.paiddate=this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-     this.paymenthistory.paiddate='2020-08-10';
+      //this.paymenthistory.paiddate=this.datePipe.transform(new Date(), 'yyyy-MM-dd'); hardcord
+     this.paymenthistory.paiddate='2021-01-10'; 
       this.paymenthistory.remarks='paid';
       this.paymenthistory.auctionnumber=this.auction.auctionnumber;
       this.paymenthistoryservice.saveMemberPayentDetais(this.paymenthistory).subscribe(data=>{

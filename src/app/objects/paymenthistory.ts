@@ -10,4 +10,5 @@ export class PaymentHistory {
 	public groupname:string;
 	public firstname:string;
 	public auctionnumber:number;
+	public bidamount:number;
 }

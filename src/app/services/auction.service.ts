@@ -27,6 +27,7 @@ export class AuctionService {
 
   getGroupNameByChitNumber(chitnumber:number):Observable<NewChitResponse>
   {
+   // let url=this.auctionbychitNbr+200;
     return this.http.get(this.auctiongroupname+chitnumber);
   }
 

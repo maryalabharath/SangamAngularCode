@@ -11,7 +11,7 @@ import { Subject } from 'rxjs';
 export class NewdatatableComponent implements OnInit {
 
   dtOptions: DataTables.Settings = {};
-  selectedMemberName:string='Bhanu Prakesh';
+  selectedMemberName:string='Bharath Kumar';
   public memberPaymentDetailsArray:MemberPaymentDetails[];
   constructor(private paymenthistoryservice:PaymenthistoryService) { }
   dtTrigger: Subject<MemberPaymentDetails> = new Subject();
@@ -27,6 +27,7 @@ this.getMemberPaymentDetails();
 
   getMemberPaymentDetails()
   {
+   
     this.paymenthistoryservice.getMemberPaymentDetails(this.selectedMemberName).subscribe(data => {
 
       this.memberPaymentDetailsArray=data;

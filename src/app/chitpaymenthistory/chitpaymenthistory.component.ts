@@ -22,8 +22,8 @@ export class ChitpaymenthistoryComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
   public paymentHistoryreponseArray: PaymentHistory[];
-  myControl = new FormControl();
-  filteredMemberNames: Observable<RegisterMemeberResponse[]>;
+  public  myControl = new FormControl();
+  public filteredMemberNames: Observable<RegisterMemeberResponse[]>;
   public selectedMember:string;
   public GroupNameArray:NewChitResponse[];
   public MemberNames:RegisterMemeberResponse[]=[];
@@ -46,7 +46,7 @@ export class ChitpaymenthistoryComponent implements OnInit {
        
           // Total over all pages
          var  total = api
-          .column( 3 )
+          .column(4)
           .data()
           .reduce( function (a, b) {
               return parseInt(a) + parseInt(b);
@@ -54,24 +54,20 @@ export class ChitpaymenthistoryComponent implements OnInit {
 
       // Total over this page
      var  pageTotal = api
-          .column( 3, { page: 'current'} )
+          .column( 4, { page: 'current'} )
           .data()
           .reduce( function (a, b) {
               return parseInt(a) + parseInt(b);
           }, 0 );
 
       // Update footer
-      $( api.column( 3 ).footer() ).html(
+      $( api.column(4).footer() ).html(
           '$'+pageTotal +' ( $'+ total +' total)'
       );
        
       }
       
    };  
-
-   this.filteredMemberNames=this.myControl.valueChanges.pipe(
-    startWith(null),
-    map(membername => membername ? this.filtermember(membername) : this.MemberNames.slice()));
     this.getPaymentDetails();
     this.getGroupDetails();
   }
@@ -79,7 +75,7 @@ export class ChitpaymenthistoryComponent implements OnInit {
   filtermember(s: any) {
     let groupname = s.name || s; // s can be a State or a string
     return this.MemberNames.filter(member =>
-      member.firstname.toLowerCase().indexOf(member.firstname.toLowerCase()) === 0);
+      member.firstname.toLowerCase().indexOf(groupname.toLowerCase()) === 0);
   }
 
   displayMember(member: RegisterMemeberResponse) {

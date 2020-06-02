@@ -30,6 +30,11 @@ import { LoaderComponent } from './loader/loader.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { GooglechartsComponent } from './googlecharts/googlecharts.component';
 import { ChartsModule } from 'ng2-charts';
+import { AnjumanmemregistrationComponent } from './anjumanmemregistration/anjumanmemregistration.component';
+import { AnjumanviewmemberComponent } from './anjumanviewmember/anjumanviewmember.component';
+import { AnjumanloanissuedComponent } from './anjumanloanissued/anjumanloanissued.component';
+import { AnjumanloanpaymentComponent } from './anjumanloanpayment/anjumanloanpayment.component';
+import { AnjumanmemberregService } from './services/anjumanmemberreg.service';
 
 const appRoutes: Routes = [
   { path:'',component:DashboardComponent},
@@ -40,7 +45,11 @@ const appRoutes: Routes = [
   { path:'pendingchitpayment',component:PendingchitpaymentComponent},
   { path:'datatable',component:DatatableComponent},
   { path:'registercomponent',component:RegistermemeberComponent},
-  { path:'newdatatable',component:NewdatatableComponent}
+  { path:'newdatatable',component:NewdatatableComponent},
+  { path:'anjumanmemregistration',component:AnjumanmemregistrationComponent},
+  { path:'anjumanviewmember',component:AnjumanviewmemberComponent},
+  { path:'anjumanloanissued',component:AnjumanloanissuedComponent},
+  { path :'anjumanloanpayment',component:AnjumanloanpaymentComponent}
 ];
 
 @NgModule({
@@ -56,7 +65,11 @@ const appRoutes: Routes = [
     RegistermemeberComponent,
     NewdatatableComponent,
     LoaderComponent,
-    GooglechartsComponent
+    GooglechartsComponent,
+    AnjumanmemregistrationComponent,
+    AnjumanviewmemberComponent,
+    AnjumanloanissuedComponent,
+    AnjumanloanpaymentComponent
     
   ],
   imports: [
@@ -78,6 +91,7 @@ const appRoutes: Routes = [
     NewchitserviceService,
     LoaderService,
     AuctionService,
+    AnjumanmemberregService,
     DatePipe,
     {
       provide:HttpInterceptor,

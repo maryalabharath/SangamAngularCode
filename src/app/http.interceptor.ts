@@ -7,7 +7,7 @@ import {
     ConnectionBackend, RequestOptions, Request, RequestOptionsArgs, Response, Http,
     Headers, ResponseContentType
 } from '@angular/http';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '../environments/environment';
 // import { TapUserProfileService } from './tap-services/tap-user-profile.service';
 import { LoaderService } from './loader/loader.service';
@@ -130,7 +130,7 @@ export class HttpInterceptor extends Http {
         return environment.baseUrl + req;
 
     }
-  
+
     private getRequestOptionArgs(options?: RequestOptionsArgs): RequestOptionsArgs {
        // this.login = TapUserProfileService.userId !== null && TapUserProfileService.userId ? TapUserProfileService.userId : 'nxg335';
         if (options == null) {
@@ -143,9 +143,9 @@ export class HttpInterceptor extends Http {
         // let  ctSession = this.getCookieInfo();
         //options.headers.append('Cookie',ctSession );
 
-        //options.headers.append('Access-Control-Allow-Credentials', 'true');  
-        // options.headers.append('withCredentials', 'true');       
-        //options.headers.append('Access-Control-Allow-Origin', '*');        
+        options.headers.append('Access-Control-Allow-Credentials', 'true');
+        //options.headers.append('withCredentials', 'true');
+        options.headers.append('Access-Control-Allow-Origin', '*');
         // console.log("In HttpInterceptor -- getRequestOptionArgs -- loginUser :", this.login);
         options.withCredentials = false;
         return options;
@@ -184,5 +184,5 @@ export class HttpInterceptor extends Http {
             console.log('ctSession  from cookie: ', ctSession);
         }
         return ctSession;
-    } 
+    }
 }

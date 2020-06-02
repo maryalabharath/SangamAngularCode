@@ -2,6 +2,10 @@
 <!-- {{ successMessage }}   -->
 {{message}}
 </ngb-alert>
+<ngb-alert *ngIf="!errorMessage" type="danger" (close)="errorMessage=true">
+  <!-- {{ successMessage }}   -->
+  {{message}}
+</ngb-alert>
 <form>
     <div class="form-group row">
         <label for="GroupName" class="col-sm-2 col-form-label" >GroupName</label>
@@ -95,7 +99,7 @@
       <td>{{ auction.actualchitamount }}</td>
       <td>{{ auction.bidamount }}</td>
       <td>{{ auction.liftedmemname }}</td>
-      <td>{{ auction.lifteddate }}</td>
+      <td>{{ auction.lifteddate|date: 'yyyy-MM-dd' }}</td>
       <td>{{ auction.month }}</td>
     </tr>
   </tbody>

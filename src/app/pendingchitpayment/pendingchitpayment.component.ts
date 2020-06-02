@@ -21,12 +21,13 @@ export class PendingchitpaymentComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
   public GroupNameArray:NewChitResponse[]=[];
-  myControl = new FormControl();
-  filteredGroupNames: Observable<NewChitResponse[]>;
+  public myControl :FormControl;
+  public filteredGroupNames: Observable<NewChitResponse[]>;
   selectChitNumber:number;
   public pendingPayMemberArray:RegisterMemeberResponse[];
 
   constructor(private newchitservice:NewchitserviceService, private payment:PaymenthistoryService) {
+    this.myControl = new FormControl();
    }
 
    ngOnInit(): void {
@@ -37,7 +38,7 @@ export class PendingchitpaymentComponent implements OnInit {
       order: [[ 0, "asc" ]]
       
    };  
-   this.myControl = new FormControl();
+   
    console.log('GroupArray length',this.GroupNameArray.length)
    this.filteredGroupNames = this.myControl.valueChanges
      .pipe(
@@ -50,7 +51,7 @@ export class PendingchitpaymentComponent implements OnInit {
    filterStates(s: any) {
     let groupname = s.name || s; // s can be a State or a string
     return this.GroupNameArray.filter(group =>
-      group.groupName.toLowerCase().indexOf(group.groupName.toLowerCase()) === 0);
+      group.groupName.toLowerCase().indexOf(groupname.toLowerCase()) === 0);
   }
 
   displayGroup(group: NewChitResponse) {

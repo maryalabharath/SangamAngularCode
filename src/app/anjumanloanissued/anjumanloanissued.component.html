@@ -1,0 +1,148 @@
+<p>anjumanloanissued works!</p>
+<ngb-alert *ngIf="!successMessage" type="success" (close)="successMessage=true">
+  <!-- {{ successMessage }}   -->
+  {{message}}
+  </ngb-alert>
+  <ngb-alert *ngIf="!errorMessage" type="danger" (close)="errorMessage=true">
+    <!-- {{ successMessage }}   -->
+    {{message}}
+  </ngb-alert>
+<form #myForm="ngForm" >
+    <div class="form-group row">
+     <label for="anjumantype" class="col-sm-2 col-form-label" >Select AnjumanType</label>
+     <div class="col-sm-3">
+       <select type="text"  class="form-control"  id="anjumantype"
+        name="anjumantype" placeholder="Anjuman Type" [(ngModel)] = "selectedAnjumanType" (change)="getAnjumanMemberDetailsByAnjumanType($event.target.value)" >
+        <option *ngFor="let anjumantype of anjumanTypeArray" [value]="anjumantype.anjumanid">{{anjumantype.anjumanname}}</option>
+       </select>
+     </div>
+   </div>
+
+   <div class="form-group row">
+    <label for="Search1" class="col-sm-2 col-form-label" >Member</label>
+    <div class="col-sm-3">
+        <mat-form-field >
+            <input type="text"
+                   placeholder="Pick one"
+                   aria-label="Number"
+                   matInput
+                   [formControl]="bookmembermyControl"
+                   [matAutocomplete]="booknamesauto" 
+                   [(ngModel)]="bookselectedMember"
+                   
+                    >
+            <mat-autocomplete #booknamesauto="matAutocomplete" autoActiveFirstOption
+             (optionSelected)="bookMemberSelectedOption($event)"  [displayWith]="displayMember"
+            >
+              <mat-option *ngFor="let option of filteredbookMemberName | async" [value]="option">
+                {{option.name}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <!-- [(ngModel)]="selectedMember"  (optionSelected)="selectedOption($event)"  [displayWith]="displayMember"  -->
+    </div>
+</div>
+
+<div class="form-group row">
+  <label  class="col-sm-2 col-form-label">Issued Amount</label>
+  <div class="col-sm-3">
+    <input type="text" class="form-control" id="IssuedAmount" [(ngModel)] = "issueamount" name="IssuedAmount" placeholder="IssuedAmount" >  
+  </div>
+</div>
+
+  
+  <div class="form-group row">
+    <label for="Search1" class="col-sm-2 col-form-label" >Surity1 Name</label>
+    <div class="col-sm-3">
+        <mat-form-field >
+            <input type="text"
+                   placeholder="Pick one"
+                   aria-label="Number"
+                   matInput
+                   [formControl]="myControl"
+                   [matAutocomplete]="auto" 
+                   [(ngModel)]="selectedMember"
+                    >
+            <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption
+             (optionSelected)="selectedOption($event)"  [displayWith]="displayMember"
+            >
+              <mat-option *ngFor="let option of filteredMemberNames | async" [value]="option">
+                {{option.name}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <!-- [(ngModel)]="selectedMember"  (optionSelected)="selectedOption($event)"  [displayWith]="displayMember"  -->
+    </div>
+</div>
+<div class="form-group row">
+    <label  class="col-sm-2 col-form-label">Address</label>
+    <div class="col-sm-3">
+      <input type="text" class="form-control" id="Address" name="Address" [(ngModel)]="selectedMemberName.address"  placeholder="Address">
+    </div>
+  </div>
+  <!-- [(ngModel)]="memberReg.address" -->
+
+<div class="form-group row">
+    <label  class="col-sm-2 col-form-label">MobileNumber</label>
+    <div class="col-sm-3">
+      <input type="text" class="form-control" id="MobileNumber" name="MobileNumber" [(ngModel)]="selectedMemberName.mobilenumber" placeholder="MobileNumber">
+    </div> 
+  </div>
+
+  <!-- [(ngModel)]="memberReg.mobilenumber"  [(ngModel)]="selectedMember" -->
+  
+  <div class="form-group row">
+    <label for="Search" class="col-sm-2 col-form-label" >Surity2</label>
+    <div class="col-sm-3">
+        <mat-form-field >
+            <input type="text"
+                   placeholder="Pick one"
+                   aria-label="Number"
+                   matInput
+                   [formControl]="suritymyControl"
+                   [matAutocomplete]="autotest" 
+                   [(ngModel)]="suritySelecteMember" >
+            <mat-autocomplete #autotest="matAutocomplete" autoActiveFirstOption 
+            (optionSelected)="surity2SelectedOption($event)"  [displayWith]="displayMember" >
+              <mat-option *ngFor="let option of filteredsurityMemberName | async" [value]="option">
+                {{option.name+' '+ option.surname}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+         
+    </div>
+</div>
+<div class="form-group row">
+    <label  class="col-sm-2 col-form-label">Address</label>
+    <div class="col-sm-3">
+      <input type="text" class="form-control" id="surityAddress" name="surityAddress" [(ngModel)]="surityselectedMemberName.address"  placeholder="Address">
+    </div>
+  </div>
+
+  <!-- [(ngModel)]="memberReg.address" -->
+  
+<div class="form-group row">
+    <label  class="col-sm-2 col-form-label">MobileNumber</label>
+    <div class="col-sm-3">
+      <input type="text" class="form-control" id="surityMobileNumber" name="surityMobileNumber" [(ngModel)]="surityselectedMemberName.mobilenumber"  placeholder="MobileNumber">
+    </div>
+  </div> 
+
+  <!-- [(ngModel)]="memberReg.mobilenumber" -->
+
+  <div class="form-group row">
+    <div class="col-sm-2">
+        <button class="btn btn-primary mb-5"  >Reset</button>
+    </div>
+    
+    <div class="col-sm-1">
+        <button class="btn btn-primary mb-2" (click)="saveLoanIssuedDetails()" >Save</button> 
+    </div>
+    
+  </div>
+
+  
+   </form>

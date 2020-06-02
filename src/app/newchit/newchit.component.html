@@ -140,8 +140,8 @@
       <td>{{ newchit.amount }}</td>
       <td>{{ newchit.noOfMemeber }}</td>
       <td>{{ newchit.noofmonths }}</td>
-      <td>{{ newchit.startdate }}</td>
-      <td>{{ newchit.enddate }}</td>
+      <td>{{ newchit.startdate | date: 'yyyy-MM-dd' }}</td>
+      <td>{{ newchit.enddate | date: 'yyyy-MM-dd'}}</td>
       <td>{{ newchit.commission }}</td>
     </tr>
   </tbody>

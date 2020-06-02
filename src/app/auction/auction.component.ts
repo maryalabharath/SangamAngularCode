@@ -9,8 +9,8 @@ import { FormControl } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { RegisterMemeberResponse } from '../objects/registermemberresponse';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { DataTableDirective } from 'angular-datatables';
+import { Response} from '@angular/http';
 declare var $;
 @Component({
   selector: 'app-auction',
@@ -31,21 +31,26 @@ export class AuctionComponent implements OnInit {
   public selecteChitNumber:number;
   public selectedMemberName:RegisterMemeberResponse;
   public auctionreponseArray: AuctionResponse[];
-  myControl = new FormControl();
+  public myControl:FormControl;
   options: string[]=[];
   //filteredOptions: Observable<string[]>;
   public successMessage:boolean = false;
+  public errorMessage:boolean=false;
   public message:string;
-  filteredMemberNames: Observable<RegisterMemeberResponse[]>;
+  public filteredMemberNames: Observable<RegisterMemeberResponse[]>;
   public selectedMember:string;
   public numberOfMonths:any[]=[];
   public selectedmonth:any;
+  errorMsg: any;
 
   constructor(private auctionService:AuctionService,private newchitservice:NewchitserviceService,private datePipe:DatePipe,
-    private registermemberservice:RegistermemberService) { }
+    private registermemberservice:RegistermemberService) {
+      this.myControl = new FormControl();
+     }
 
     ngOnInit(): void {
       this.successMessage=true;
+      this.errorMessage=true;
 
       this.dtOptions = {
         pagingType: 'simple_numbers',
@@ -53,18 +58,14 @@ export class AuctionComponent implements OnInit {
         order:[]
         
      };  
-   
-    this.filteredMemberNames=this.myControl.valueChanges.pipe(
-      startWith(null),
-      map(membername => membername ? this.filtermember(membername) : this.MemberNames.slice()));
     this.getAuctionDetails();
     this.getGroupDetails();
   }
 
   filtermember(s: any) {
-    let groupname = s.name || s; // s can be a State or a string
+    let firtname = s.firstname || s; // s can be a State or a string
     return this.MemberNames.filter(member =>
-      member.firstname.toLowerCase().indexOf(member.firstname.toLowerCase()) === 0);
+      member.firstname.toLowerCase().indexOf(firtname.toLowerCase()) === 0);
   }
 
   displayMember(member: RegisterMemeberResponse) {
@@ -77,21 +78,6 @@ export class AuctionComponent implements OnInit {
       console.log(data);
       this.auctionreponseArray=data;
       this.dtTrigger.next();
-      // this.dtOptions = {
-      //   data: this.auctionreponseArray,
-      //   columns: [
-      //     {title: 'AuctionNumber', data: 'auctionnumber'},
-      //     {title: 'ChitNumber', data: 'chitnumber'},
-      //     {title: 'BidAmount', data: 'bidamount'},
-      //     {title: 'ActualChitAmount', data: 'actualchitamount'},
-      //     {title: 'LiftedMemName', data: 'liftedmemname'},
-      //     {title: 'LiftedDate', data: 'lifteddate'},
-      //   ]
-      // };
-    // }, err => {}, () => {
-    //   this.dataTable = $(this.table.nativeElement);
-    //   this.dataTable.DataTable(this.dtOptions);
-    // });
     });
   }  
 
@@ -113,6 +99,9 @@ export class AuctionComponent implements OnInit {
     this.auctionService.getGroupNameByChitNumber(chitnumber).subscribe(data => {
       console.log(data);
       this.ActualChitAmount=data;
+    },error => {
+      this.errorMsg=error;
+      alert(JSON.stringify(error.json()));
     })
     if(this.GroupNameArray.length!=0)
     {
@@ -137,8 +126,8 @@ export class AuctionComponent implements OnInit {
   {
     auction.actualchitamount = this.ActualChitAmount.amount;
     auction.chitnumber = this.selecteChitNumber;
-    //auction.lifteddate=this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-    auction.lifteddate='2020-08-10';
+    //auction.lifteddate=this.datePipe.transform(new Date(), 'yyyy-MM-dd'); hardcode
+    auction.lifteddate='2021-01-10';
     auction.liftedmemname=this.selectedMemberName.firstname;
     auction.memberid=this.selectedMemberName.membernumber;
     auction.month=this.selectedmonth;
@@ -150,22 +139,39 @@ export class AuctionComponent implements OnInit {
       this.rerender();
       this.ResetFormFields(auction);
       this.getAuctionDetails();
-    })
+    },error => {
+      if(error instanceof Response)
+      {
+        console.log(error.text());
+        console.log(error.json());
+        console.log(error.json().message);
+        this.message=error.json().message;
+        this.errorMessage=false;
+        setTimeout(() => this.errorMessage = true, 10000); 
+      }
+
+      // alert(JSON.stringify(error.json()));
+       //this.errorMsg=JSON.stringify(error._body);
+      // console.log(error._body);
+     //alert(this.errorMsg.message);
+      // this.message=error._body.message;
+      // this.errorMessage=false;
+      // setTimeout(() => this.errorMessage = true, 8000);
+
+      
+    }
+    )
     
   }
 
    getMemberDetailsByChitNumber()
   {
+    this.selectedMember=null;
     this.registermemberservice.getMemberDetailsByChitNumber(this.selecteChitNumber).subscribe(data => {
       this.MemberNames=data;
       this.filteredMemberNames=this.myControl.valueChanges.pipe(
         startWith(null),
         map(membername => membername ? this.filtermember(membername) : this.MemberNames.slice()));
-      // for(let member of this.MemberNames)
-      // {
-      //   this.options.push(member.firstname);
-      // }
-      // console.log(data);
     })
   }
 

@@ -53,27 +53,27 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link" [routerLink]="['/registercomponent']">
-                  RegisterMember                 
+                  RegisterMember
                 </a>
               </li>
-              
+
 
               <li class="nav-item">
                 <a class="nav-link" [routerLink]="['/auction']">
                   <span data-feather="shopping-cart"></span>
-                  Auction                 
+                  Auction
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" [routerLink]="['/chitpayment']">
                   <span data-feather="users"></span>
-                  Chit Payment                 
+                  Chit Payment
                 </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" [routerLink]="['/chitpaymenthistory']">
-                  <span data-feather="bar-chart-2"></span>  
-                  Chit Payment History                
+                  <span data-feather="bar-chart-2"></span>
+                  Chit Payment History
                 </a>
               </li>
               <li class="nav-item">
@@ -85,34 +85,46 @@
             </ul>
 
             <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-              <span>Saved reports</span>
+              <span>Anjuman</span>
               <a class="d-flex align-items-center text-muted" href="#">
                 <span data-feather="plus-circle"></span>
               </a>
             </h6>
             <ul class="nav flex-column mb-2">
-              <li class="nav-item">
+              <!-- <li class="nav-item">
                 <a class="nav-link"  [routerLink]="['/datatable']">
                   <span data-feather="file-text"></span>
                   datatable
                 </a>
-              </li>
+              </li> -->
               <li class="nav-item">
+                <a class="nav-link"  [routerLink]="['/anjumanmemregistration']">
+                  <span data-feather="file-text"></span>
+                  Member Registration
+                </a>
+              </li>
+              <!-- <li class="nav-item">
                 <a class="nav-link" [routerLink]="['/newdatatable']">
                   <span data-feather="file-text"></span>
                    New Datatable
                 </a>
-              </li>
+              </li> -->
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" [routerLink]="['/anjumanviewmember']">
                   <span data-feather="file-text"></span>
-                  Social engagement
+                  View Member
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link"[routerLink]="['/anjumanloanissued']">
+                  <span data-feather="file-text"></span>
+                  Issue Loan
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/anjumanloanpayment']" >
                   <span data-featnpher="file-text"></span>
-                  Year-end sale
+                  Loan Payment
                 </a>
               </li>
             </ul>
@@ -135,10 +147,10 @@
           </div> -->
 
 
-          <h6>Section title</h6>
-         
+          <!-- <h6>Section title</h6> -->
+
           <router-outlet></router-outlet>
-          
+
         </main>
       </div>
     </div>
